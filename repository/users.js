@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
 var exports = module.exports
+const Users = require('../models')
 
 exports.getUser = () => {
 

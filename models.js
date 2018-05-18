@@ -3,11 +3,11 @@ const Schema = mongoose.Schema
 
 const userSchema = new Schema({
   username: {type: String, unique: true},
-  authID: {type: string, required: true, unique: true},
+  authID: {type: String, required: true, unique: true},
   wins: {type: Number},
   loss: {type: Number}
 })
 
-const User = mongoose.model('User', userSchema)
+const Users = mongoose.model('Users', userSchema)
 
-module.exports = User
+module.exports = Users
