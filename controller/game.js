@@ -3,9 +3,7 @@ const game = express.Router()
 const gameService = require('../service/game')
 
 game.post('/findGame', (req, res) => {
-  const user = req.body.user
-  gameService.addToMatchMakingQue(user)
-  console.log('controller')
+  gameService.addToMatchMakingQue(req.body)
   res.send('hello world')
 })
 

@@ -8,7 +8,6 @@ users.get('/login/:authID/:nickname', (req, res) => {
 
   return userService.getUserByAuthID(authID, nickname)
   .then(data => {
-    console.log(data)
     res.send(data)
   })
   .catch(err => {
