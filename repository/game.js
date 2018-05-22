@@ -7,10 +7,10 @@ admin.initializeApp({
   databaseURL: firebaseUrl
 });
 const db = admin.database()
-const ref = db.ref('match-making-que')
-//const matchMakingQue = ref.child('match-making-que')
+const matchMakingQueRef = db.ref('match-making-que')
+const newMatchRequestRef = matchMakingQueRef.push()
 
 exports.addToMatchMakingQue = (user) => {
-  console.log('repository')
-  ref.set(user)
+  console.log(user)
+  return newMatchRequestRef.set(user)
 }
