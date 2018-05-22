@@ -43,6 +43,7 @@ function matchUsers() {
             totalTurns: 0,
             winner: null
           }
+          
           newGame.set(newGameInfo)
         }
       })
