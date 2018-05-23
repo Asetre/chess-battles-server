@@ -3,8 +3,13 @@ const game = express.Router()
 const gameService = require('../service/game')
 
 game.post('/findGame', (req, res) => {
-  gameService.addToMatchMakingQue(req.body)
-  res.send('hello world')
+  const matchMakingQueID = gameService.addToMatchMakingQue(req.body)
+  res.send(matchMakingQueID)
+})
+
+game.post('/cancelMatchMaking/:id', (req, res) => {
+  gameService.removeFromMatchMakingQue(req.params.id)
+  res.send('goodbye world')
 })
 
 module.exports = game

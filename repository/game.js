@@ -16,6 +16,11 @@ exports.addToMatchMakingQue = (user) => {
 
   newMatchRequest.push(user)
   matchUsers()
+  return refId
+}
+
+exports.removeFromMatchMakingQue = (id) => {
+  matchMakingQueRef.child(id).remove()
 }
 
 function matchUsers() {
@@ -43,7 +48,7 @@ function matchUsers() {
             totalTurns: 0,
             winner: null
           }
-          
+
           newGame.set(newGameInfo)
         }
       })
