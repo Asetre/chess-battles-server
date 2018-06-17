@@ -46,7 +46,11 @@ function matchUsers() {
             board: null,
             turn: 1,
             totalTurns: 0,
-            winner: null
+            winner: null,
+            pieceMove: {
+              previousLocation: null,
+              newLocation: null
+            }
           }
 
           newGame.set(newGameInfo)
