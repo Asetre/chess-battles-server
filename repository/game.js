@@ -11,10 +11,9 @@ const matchMakingQueRef = db.ref('match-making-que')
 const gamesRef = db.ref('games')
 
 exports.addToMatchMakingQue = (user) => {
-  const newMatchRequest = matchMakingQueRef.push()
+  const newMatchRequest = matchMakingQueRef.push(user)
   const refId = newMatchRequest.getKey()
 
-  newMatchRequest.push(user)
   matchUsers()
   return refId
 }
@@ -34,8 +33,8 @@ function matchUsers() {
         const nextUser = usersInQue[usersInQueKeys[i + 1]]
 
         if(user && nextUser) {
-          matchMakingQueRef.child(key).remove()
-          matchMakingQueRef.child(usersInQueKeys[i+1]).remove()
+          //matchMakingQueRef.child(key).remove()
+          //matchMakingQueRef.child(usersInQueKeys[i+1]).remove()
           let newGame = gamesRef.push()
 
           const newGameInfo = {
@@ -48,8 +47,7 @@ function matchUsers() {
             totalTurns: 0,
             winner: null,
             pieceMove: {
-              previousLocation: null,
-              newLocation: null
+              previousLocation: null
             }
           }
 
