@@ -32,10 +32,20 @@ function matchUsers() {
         const user = usersInQue[key]
         const nextUser = usersInQue[usersInQueKeys[i + 1]]
 
+
         if(user && nextUser) {
-          //matchMakingQueRef.child(key).remove()
-          //matchMakingQueRef.child(usersInQueKeys[i+1]).remove()
           let newGame = gamesRef.push()
+          let newGameID = newGame.getKey()
+
+          matchMakingQueRef.child(key).update({
+            matchFound: true,
+            gameID: newGameID
+          })
+
+          matchMakingQueRef.child(usersInQueKeys[i + 1]).update({
+            matchFound: true,
+            gameID: newGameID
+          })
 
           const newGameInfo = {
             users: {
