@@ -9,7 +9,7 @@ game.post('/findGame', (req, res) => {
 
 game.post('/cancelMatchMaking/:id', (req, res) => {
   gameService.removeFromMatchMakingQue(req.params.id)
-  res.send('goodbye world')
+  res.send('goodbye')
 })
 
 game.post('/over', (req, res) => {
