@@ -6,4 +6,8 @@ const game = require('./controller/game')
 router.use('/users', user)
 router.use('/game', game)
 
+router.get('/health-check', (req, res) => {
+  res.status(200).send('online')
+})
+
 module.exports = router

@@ -5,8 +5,8 @@ const routes = require('./routes')
 //eslint-disable-next-line
 const { port, databaseUrl, firebaseUrl } = require('./config')
 const bodyParser = require('body-parser')
-const https = require('https')
-const fs = require('fs')
+//const https = require('https')
+//const fs = require('fs')
 
 
 app.use((req, res, next) => {
@@ -30,7 +30,6 @@ app.use((req, res, next) => {
 app.use(bodyParser.json())
 app.use(routes)
 
-
 var server
 
 
@@ -50,19 +49,25 @@ const closeServer = () => {
       console.log('Was unable to gracefully shut down')
     })
 }
-
-const startServer = () => {
-  mongoose.connect(databaseUrl)
-    .then(() => {
-      //eslint-disable-next-line
-      console.log('Connected to database')
-      server = https.createServer({
+/*
+ https.createServer({
         key: fs.readFileSync('server.key'),
         cert: fs.readFileSync('server.cert')
       }, app)
         .listen(port, function () {
           console.log(`Server listening on port ${port}`)
         })
+*/
+
+const startServer = () => {
+  mongoose.connect(databaseUrl)
+    .then(() => {
+      //eslint-disable-next-line
+      console.log('Connected to database')
+      server = app.listen(port, () => {
+        //eslint-disable-next-line
+        console.log(`Server running on port ${port}`)
+      })
     })
     .catch(err => {
       //eslint-disable-next-line
