@@ -3,8 +3,10 @@ const app = express()
 const mongoose = require('mongoose')
 const routes = require('./routes')
 //eslint-disable-next-line
-const {port, databaseUrl, firebaseUrl} = require('./config')
+const { port, databaseUrl, firebaseUrl } = require('./config')
 const bodyParser = require('body-parser')
+const https = require('https')
+const fs = require('fs')
 
 
 app.use((req, res, next) => {
@@ -34,18 +36,18 @@ var server
 
 const closeServer = () => {
   //eslint-disable-next-line
-    console.log('Disconnecting from database')
+  console.log('Disconnecting from database')
   mongoose.disconnect()
     .then(() => {
       server.close()
       //eslint-disable-next-line
-            console.log('Server closed...')
+      console.log('Server closed...')
     })
     .catch(err => {
       //eslint-disable-next-line
-            console.log(err)
+      console.log(err)
       //eslint-disable-next-line
-            console.log('Was unable to gracefully shut down')
+      console.log('Was unable to gracefully shut down')
     })
 }
 
@@ -53,21 +55,24 @@ const startServer = () => {
   mongoose.connect(databaseUrl)
     .then(() => {
       //eslint-disable-next-line
-            console.log('Connected to database')
-      server = app.listen(port, () => {
-        //eslint-disable-next-line
-                console.log(`Server is running on port: ${port}...`)
-      })
+      console.log('Connected to database')
+      server = https.createServer({
+        key: fs.readFileSync('server.key'),
+        cert: fs.readFileSync('server.cert')
+      }, app)
+        .listen(port, function () {
+          console.log(`Server listening on port ${port}`)
+        })
     })
     .catch(err => {
       //eslint-disable-next-line
-            console.log(err)
+      console.log(err)
     })
 }
 
 
-if(require.main === module) {
+if (require.main === module) {
   startServer()
 }
 
-module.exports = {startServer, closeServer}
+module.exports = { startServer, closeServer }
