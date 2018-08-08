@@ -2,12 +2,8 @@ const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
 const routes = require('./routes')
-//eslint-disable-next-line
-const { port, databaseUrl, firebaseUrl } = require('./config')
+const { port, databaseUrl } = require('./config')
 const bodyParser = require('body-parser')
-//const https = require('https')
-//const fs = require('fs')
-
 
 app.use((req, res, next) => {
   // Website you wish to allow to connect
@@ -26,12 +22,10 @@ app.use((req, res, next) => {
   // Pass to next layer of middleware
   next()
 })
-
 app.use(bodyParser.json())
 app.use(routes)
 
 var server
-
 
 const closeServer = () => {
   //eslint-disable-next-line
@@ -49,32 +43,26 @@ const closeServer = () => {
       console.log('Was unable to gracefully shut down')
     })
 }
-/*
- https.createServer({
-        key: fs.readFileSync('server.key'),
-        cert: fs.readFileSync('server.cert')
-      }, app)
-        .listen(port, function () {
-          console.log(`Server listening on port ${port}`)
-        })
-*/
 
 const startServer = () => {
-  mongoose.connect(databaseUrl)
-    .then(() => {
-      //eslint-disable-next-line
-      console.log('Connected to database')
-      server = app.listen(port, () => {
+  return new Promise((resolve, reject) => {
+    mongoose.connect(databaseUrl)
+      .then(() => {
         //eslint-disable-next-line
-        console.log(`Server running on port ${port}`)
+        console.log('Connected to database')
+        server = app.listen(port, () => {
+          //eslint-disable-next-line
+          console.log(`Server running on port ${port}`)
+          resolve()
+        })
       })
-    })
-    .catch(err => {
-      //eslint-disable-next-line
-      console.log(err)
-    })
+      .catch(err => {
+        //eslint-disable-next-line
+        console.log(err)
+        reject(err)
+      })
+  })
 }
-
 
 if (require.main === module) {
   startServer()

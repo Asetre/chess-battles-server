@@ -1,13 +1,14 @@
 var exports = module.exports
-const userRepository = require('../repository/users')
 
-exports.getUserByAuthID = (authID, nickname) => {
+module.exports = function (userRepository) {
+  getUserByAuthID = (authID, nickname) => {
     return userRepository.getUserByAuthID(authID)
-        .then(user => {
-            if(!user) {
-                return userRepository.createUser(authID, nickname)
-            }else {
-                return user
-            }
-        })
+      .then(user => {
+        if (!user) {
+          return userRepository.createUser(authID, nickname)
+        } else {
+          return user
+        }
+      })
+  }
 }

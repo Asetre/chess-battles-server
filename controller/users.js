@@ -1,6 +1,7 @@
 const express = require('express')
 const users = express.Router()
-const userService = require('../service/users')
+const userRepository = require('../repository/users')
+const userService = require('../service/users')(userRepository)
 
 users.get('/login/:authID/:nickname', (req, res) => {
   const authID = req.params.authID

@@ -17,6 +17,7 @@ exports.createUser = (authID, nickname) => {
     createdAt: new Date.toISOString(),
     gameHistory: []
   }
+
   return Users.create(newUserInfo, (err, user) => {
     if (err) return err
     return user
