@@ -7,14 +7,13 @@ module.exports = {
     "parserOptions": {
         "ecmaVersion": 2017
     },
+    "plugins": [
+        "mocha"
+    ],
     "rules": {
         "indent": [
             "error",
             2
-        ],
-        "linebreak-style": [
-            "error",
-            "unix"
         ],
         "quotes": [
             "error",
@@ -23,6 +22,7 @@ module.exports = {
         "semi": [
             "error",
             "never"
-        ]
+        ],
+        "mocha/no-exclusive-tests": "error"
     }
 };
