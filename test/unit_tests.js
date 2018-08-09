@@ -1,10 +1,7 @@
 const chai = require('chai')
 const assert = chai.assert
 const { startServer, closeServer } = require('../server.js')
-const _userRepository = {
-  
-}
-const userService = require('../service/users')
+const userService = require('../service/users')(_userRepository)
 
 describe('User', function () {
   before(async function () {
@@ -15,15 +12,12 @@ describe('User', function () {
   })
 
   describe('User Service', function () {
-
-    const user = {
-      authID: 1,
-      nickname: 'john.doe'
-    }
-
-    it('should getUserByAuthID', async function () {
+    it('should getUserByAuthID', function () {
+      userService.getUserByAuthID()
     })
 
+    it('should create a new user', function() {
+    })
   })
 
 })
