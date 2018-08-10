@@ -8,19 +8,31 @@ admin.initializeApp({
   databaseURL: firebaseUrl
 })
 const db = admin.database()
-const matchMakingQueRef = db.ref('match-making-que')
+const matchMakingQueueRef = db.ref('match-making-que')
 const gamesRef = db.ref('games')
 
 exports.addToMatchMakingQue = (user) => {
-  const newMatchRequest = matchMakingQueRef.push(user)
+  let newUserInMatchMakingQueue = {
+    ...user,
+    createdAt: new Date.toISOString()
+  }
+
+  const newMatchRequest = matchMakingQueueRef.push(user)
   const refId = newMatchRequest.getKey()
 
-  matchUsers()
   return refId
 }
 
-exports.removeFromMatchMakingQue = (id) => {
-  matchMakingQueRef.child(id).remove()
+exports.removeFromMatchMakingQueue = (id) => {
+  return matchMakingQueueRef.child(id).remove()
+}
+
+exports.returnMatchMakingRef = () => {
+  return matchMakingQueueRef
+}
+
+exports.returnGamesRef = () => {
+  return gamesRef
 }
 
 exports.updateUserRecord = (data) => {
@@ -33,49 +45,4 @@ exports.updateUserRecord = (data) => {
       }
       user.save()
     })
-}
-
-function matchUsers() {
-  matchMakingQueRef.once('value', (snap) => {
-    const usersInQue = snap.val()
-    const usersInQueKeys = Object.keys(usersInQue)
-
-    if(usersInQueKeys.length > 1 && usersInQueKeys.length !== 0) {
-      usersInQueKeys.forEach((key, i) => {
-        const user = usersInQue[key]
-        const nextUser = usersInQue[usersInQueKeys[i + 1]]
-
-        if(user && nextUser) {
-          let newGame = gamesRef.push()
-          let newGameID = newGame.getKey()
-
-          matchMakingQueRef.child(key).update({
-            matchFound: true,
-            gameID: newGameID
-          })
-
-          matchMakingQueRef.child(usersInQueKeys[i + 1]).update({
-            matchFound: true,
-            gameID: newGameID
-          })
-
-          const newGameInfo = {
-            users: {
-              0: nextUser,
-              1: user
-            },
-            board: null,
-            turn: 1,
-            totalTurns: 0,
-            winner: null,
-            pieceMove: {
-              previousLocation: null
-            }
-          }
-
-          newGame.set(newGameInfo)
-        }
-      })
-    }
-  })
 }

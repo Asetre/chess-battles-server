@@ -1,16 +1,16 @@
-var exports = module.exports
+module.exports = class CreateUserService {
+  initializeUserRepository(userRepository) {
+    this.userRepository = userRepository
+  }
 
-module.exports = function (userRepository) {
-  return {
-    getUserByAuthID: (authID, nickname) => {
-      return userRepository.getUserByAuthID(authID)
-        .then(user => {
-          if (!user) {
-            return userRepository.createUser(authID, nickname)
-          } else {
-            return user
-          }
-        })
-    }
+  getUserByAuthID(authID, nickname) {
+    return this.userRepository.getUserByAuthID(authID)
+      .then(user => {
+        if (!user) {
+          return this.userRepository.createUser(authID, nickname)
+        } else {
+          return user
+        }
+      })
   }
 }

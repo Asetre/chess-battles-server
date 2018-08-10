@@ -1,7 +1,11 @@
 const express = require('express')
 const users = express.Router()
+
 const userRepository = require('../repository/users')
-const userService = require('../service/users')(userRepository)
+const CreateUserService = require('../service/users')
+
+let userService = new CreateUserService()
+userService.initializeUserRepository(userRepository)
 
 users.get('/login/:authID/:nickname', (req, res) => {
   const authID = req.params.authID

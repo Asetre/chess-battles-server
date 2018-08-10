@@ -1,10 +1,13 @@
 const chai = require('chai')
 const assert = chai.assert
 const { startServer, closeServer } = require('../../server.js')
-
 const _database = require('./_database')
-const _userRepository = require('./_repository')(_database)
-const userService = require('../../service/users')(_userRepository)
+
+const CreateRepository = require('./_repository')
+const CreateUserService = require('../../service/users')
+
+const userService = new CreateUserService()
+const userRepository = new CreateRepository()
 
 describe('User Unit tests', function () {
   before(async function () {
@@ -16,6 +19,11 @@ describe('User Unit tests', function () {
   })
 
   describe('User Service', function () {
+    before(function() {
+      userRepository.initializeDB(_database)
+      userService.initializeUserRepository(userRepository)
+    })
+
     beforeEach(function() {
       _database.reset()
     })
@@ -34,8 +42,8 @@ describe('User Unit tests', function () {
       }
       await userService.getUserByAuthID(newUser.authID, newUser.nickname)
       let foundUser = _database.findUserByAuthID(newUser.authID)
-      console.log(typeof newUser, foundUser)
-      assert.equal(newUser, foundUser)
+
+      assert.deepEqual(newUser, foundUser)
     })
   })
 

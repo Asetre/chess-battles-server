@@ -1,15 +1,28 @@
 const express = require('express')
 const game = express.Router()
-const gameService = require('../service/game')
+
+const gameRepository = require('../repository/game')
+const CreateGameService = require('../service/game')
+
+let gameService = new CreateGameService()
+gameService.initializeGameRepository(gameRepository)
+gameService.startMatchingUsersInMatchMaking()
 
 game.post('/findGame', (req, res) => {
-  const matchMakingQueID = gameService.addToMatchMakingQue(req.body)
+  const matchMakingQueID = gameService.addToMatchMakingQueue(req.body)
+  console.log(matchMakingQueID)
   res.send(matchMakingQueID)
 })
 
 game.post('/cancelMatchMaking/:id', (req, res) => {
-  gameService.removeFromMatchMakingQue(req.params.id)
-  res.send('goodbye')
+  try {
+    gameRepository.removeFromMatchMakingQue(req.params.id)
+  }catch (err) {
+    //eslint-disable-next-line
+    console.log(err)
+    res.status(500).send('An error ocurred ')
+  }
+  res.status(200)
 })
 
 game.post('/over', (req, res) => {
