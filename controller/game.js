@@ -31,6 +31,7 @@ game.post('/over', (req, res) => {
       res.send(200)
     })
     .catch((err) => {
+      //eslint-disable-next-line
       console.log(err)
       res.send(500)
     })
