@@ -10,19 +10,18 @@ gameService.startMatchingUsersInMatchMaking()
 
 game.post('/findGame', (req, res) => {
   const matchMakingQueID = gameService.addToMatchMakingQueue(req.body)
-  console.log(matchMakingQueID)
   res.send(matchMakingQueID)
 })
 
 game.post('/cancelMatchMaking/:id', (req, res) => {
   try {
-    gameRepository.removeFromMatchMakingQue(req.params.id)
+    gameRepository.removeFromMatchMakingQueue(req.params.id)
   }catch (err) {
     //eslint-disable-next-line
     console.log(err)
     res.status(500).send('An error ocurred ')
   }
-  res.status(200)
+  res.status(200).send('Removed from queue')
 })
 
 game.post('/over', (req, res) => {

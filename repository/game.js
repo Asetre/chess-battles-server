@@ -11,10 +11,10 @@ const db = admin.database()
 const matchMakingQueueRef = db.ref('match-making-que')
 const gamesRef = db.ref('games')
 
-exports.addToMatchMakingQue = (user) => {
+exports.addToMatchMakingQueue = (user) => {
   let newUserInMatchMakingQueue = {
     ...user,
-    createdAt: new Date.toISOString()
+    createdAt: new Date().toISOString()
   }
 
   const newMatchRequest = matchMakingQueueRef.push(user)

@@ -14,7 +14,7 @@ exports.createUser = (authID, nickname) => {
     authID: authID,
     wins: 0,
     loss: 0,
-    createdAt: new Date.toISOString(),
+    createdAt: new Date().toISOString(),
     gameHistory: []
   }
 

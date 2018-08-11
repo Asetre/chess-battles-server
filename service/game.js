@@ -19,7 +19,7 @@ module.exports = class CreateGameService {
   }
 
   addToMatchMakingQueue(user) {
-    let queID = this.gameRepository.addToMatchMakingQue(user)
+    let queID = this.gameRepository.addToMatchMakingQueue(user)
     return queID
   }
 
@@ -41,21 +41,21 @@ module.exports = class CreateGameService {
       if(!usersInQueue) return 
 
       let usersInQueueKeys = Object.keys(usersInQueue)
-      if (usersInQueKeys.length > 1 && usersInQueKeys.length !== 0) {
-        usersInQueKeys.forEach((key, i) => {
-          const user = usersInQue[key]
-          const nextUser = usersInQue[usersInQueKeys[i + 1]]
+      if (usersInQueueKeys.length > 1 && usersInQueueKeys.length !== 0) {
+        usersInQueueKeys.forEach((key, i) => {
+          const user = usersInQueue[key]
+          const nextUser = usersInQueue[usersInQueueKeys[i + 1]]
 
           if (user && nextUser) {
             let newGame = gamesRef.push()
             let newGameID = newGame.getKey()
 
-            matchMakingQueRef.child(key).update({
+            matchMakingQueueRef.child(key).update({
               matchFound: true,
               gameID: newGameID
             })
 
-            matchMakingQueRef.child(usersInQueKeys[i + 1]).update({
+            matchMakingQueueRef.child(usersInQueueKeys[i + 1]).update({
               matchFound: true,
               gameID: newGameID
             })
